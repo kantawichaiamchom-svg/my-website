@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DealRoom - Hotel Booking</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- =========================
+         HEADER
+    ========================== -->
+    <header id="top">
+
+        <div class="header-container">
+
+            <!-- LOGO -->
+            <div class="logo">
+                <div class="logo-icon">🏨</div>
+                Deal<span>Room</span>
+            </div>
+
+            <!-- NAVIGATION -->
+            <nav>
+                <a href="#home" class="page-nav" data-page="home">Home</a>
+                <a href="#hotels-page" class="page-nav" data-page="hotels">Hotels</a>
+                <a href="#deals-page" class="page-nav" data-page="deals">Deals</a>
+                <a href="#about-page" class="page-nav" data-page="about">About Us</a>
+            </nav>
+
+            <div class="nav-buttons">
+                <button class="btn btn-outline" id="loginButton" type="button">Log In</button>
+                <button class="btn btn-primary" id="signupButton" type="button">Sign Up</button>
+                <button class="user-name" id="headerUserName" type="button" aria-label="Open Dashboard"></button>
+                <button class="btn btn-outline header-bookings" id="headerBookingsButton" type="button">Booking Queue</button>
+                <button class="btn btn-danger header-logout" id="headerLogoutButton" type="button">Log Out</button>
+            </div>
+
+        </div>
+
+    </header>
+
+    <section class="content-page" id="contentPage" aria-live="polite"></section>
+
+    <section class="dashboard-page" id="dashboardPage" aria-labelledby="dashboardTitle">
+        <div class="dashboard-header">
+            <div>
+                <div class="dashboard-kicker">DealRoom Dashboard</div>
+                <h1 id="dashboardTitle">Welcome back, <span id="dashboardUserName"></span></h1>
+                <p>จัดการการจองและดูข้อมูลการเข้าพักของคุณ</p>
+            </div>
+            <button class="btn btn-danger" id="logoutButton" type="button">Log Out</button>
+        </div>
+
+        <div class="dashboard-toolbar">
+            <div class="dashboard-tabs" role="tablist" aria-label="Dashboard views">
+                <button class="btn btn-outline is-active dashboard-tab" data-view="overview" type="button">Overview</button>
+                <button class="btn btn-outline dashboard-tab" data-view="bookings" type="button">My Bookings</button>
+            </div>
+            <button class="btn btn-primary" id="newBookingButton" type="button">+ New Booking</button>
+        </div>
+
+        <div class="dashboard-grid" id="dashboardContent">
+            <article class="dashboard-card">
+                <div class="dashboard-card-header">
+                    <h2>Upcoming Trips</h2>
+                    <span>✦</span>
+                </div>
+                <div class="stat-number" id="upcomingTripsCount">0</div>
+                <p>การจองที่กำลังจะมาถึง</p>
+            </article>
+
+            <article class="dashboard-card">
+                <div class="dashboard-card-header">
+                    <h2>Total Nights</h2>
+                    <span>▣</span>
+                </div>
+                <div class="stat-number" id="totalNightsCount">0</div>
+                <p>คืนที่เข้าพักในปีนี้</p>
+            </article>
+
+            <article class="dashboard-card">
+                <div class="dashboard-card-header">
+                    <h2>Saved Deals</h2>
+                    <span>♡</span>
+                </div>
+                <div class="stat-number" id="savedDealsCount">0</div>
+                <p>ดีลที่บันทึกไว้</p>
+            </article>
+
+            <article class="dashboard-card dashboard-card-wide">
+                <div class="dashboard-card-header">
+                    <div>
+                        <h2>Upcoming Booking</h2>
+                        <p>รายการเข้าพักถัดไปของคุณ</p>
+                    </div>
+                    <button class="btn btn-outline" id="viewAllBookingsButton" type="button">View All</button>
+                </div>
+                <div class="booking-row" id="upcomingBookingRow">
+                    <div>
+                        <strong id="upcomingBookingName">ยังไม่มีรายการจอง</strong>
+                        <p id="upcomingBookingInfo">เลือกโรงแรมเพื่อเพิ่มรายการจอง</p>
+                    </div>
+                    <div class="booking-price" id="upcomingBookingPrice">-</div>
+                </div>
+                <div class="dashboard-card-footer">
+                    <p id="upcomingBookingGuests">-</p>
+                    <button class="btn btn-danger" id="cancelBookingButton" type="button" disabled>Cancel</button>
+                </div>
+            </article>
+
+            <article class="dashboard-card dashboard-card-wide">
+                <div class="dashboard-card-header">
+                    <div>
+                        <h2>Booking Queue</h2>
+                        <p>คิวการจองโรงแรมของคุณ</p>
+                    </div>
+                    <span>▤</span>
+                </div>
+                <div class="booking-queue" id="bookingQueue"></div>
+            </article>
+
+            <article class="dashboard-card">
+                <div class="dashboard-card-header">
+                    <h2>Price View</h2>
+                    <span>฿</span>
+                </div>
+                <div class="dashboard-tabs" role="tablist" aria-label="Price period">
+                    <button class="btn btn-primary is-active period-tab" type="button">Monthly</button>
+                    <button class="btn btn-outline period-tab" type="button">Yearly</button>
+                </div>
+                <p class="stat-number" id="totalSpendAmount">฿0</p>
+                <p>ยอดใช้จ่ายโดยประมาณ</p>
+            </article>
+        </div>
+
+        <div class="pagination" aria-label="Dashboard pages">
+            <button class="btn btn-outline page-button" data-page="1" type="button" aria-label="Previous page">←</button>
+            <button class="btn btn-primary page-button" data-page="1" type="button">1</button>
+            <button class="btn btn-outline page-button" data-page="2" type="button">2</button>
+            <button class="btn btn-outline page-button" data-page="3" type="button">3</button>
+            <button class="btn btn-outline page-button" data-page="3" type="button" aria-label="Next page">→</button>
+        </div>
+    </section>
+
+
+    <!-- =========================
+         MAIN
+    ========================== -->
+    <main>
+
+        <!-- =========================
+             HERO SECTION
+        ========================== -->
+        <section class="hero">
+
+            <div class="hero-content">
+
+                <div class="hero-label">
+                    ✦ BEST HOTEL DEALS
+                </div>
+
+                <h1>
+                    Find Your <span>Perfect Stay</span>
+                </h1>
+
+                <p>
+                    Discover comfortable hotels, amazing destinations,
+                    and exclusive deals. Book your next stay easily with DealRoom.
+                </p>
+
+                <div class="hero-buttons">
+                    <button class="btn btn-primary" id="bookNowButton" type="button">
+                        Book Now
+                    </button>
+
+                    <button class="btn btn-secondary" id="heroDetailsButton" type="button">
+                        View Details
+                    </button>
+                </div>
+
+            </div>
+
+
+            <!-- =========================
+                 SEARCH CARD
+            ========================== -->
+            <div class="hero-card">
+
+                <h3>🔎 Search Hotels</h3>
+
+                <div class="search-box">
+
+                    <div class="input-group">
+                        <label for="destinationInput">Destination</label>
+                        <input
+                            id="destinationInput"
+                            type="text"
+                            placeholder="Where do you want to stay?"
+                        >
+                    </div>
+
+                    <div class="input-group">
+                        <label>Check-in</label>
+                        <input id="checkInInput" type="date">
+                    </div>
+
+                    <div class="input-group">
+                        <label>Check-out</label>
+                        <input id="checkOutInput" type="date">
+                    </div>
+
+                    <div class="input-group">
+                        <label>Guests</label>
+
+                        <select id="guestInput">
+                            <option>1 Guest</option>
+                            <option>2 Guests</option>
+                            <option>3 Guests</option>
+                            <option>4 Guests</option>
+                            <option>5+ Guests</option>
+                        </select>
+
+                    </div>
+
+                    <button class="btn btn-primary search-btn" id="searchButton" type="button">
+                        Search Hotels
+                    </button>
+                    <div class="search-result" id="searchResult" role="status" aria-live="polite"></div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             POPULAR HOTELS SECTION
+        ========================== -->
+        <section id="hotels">
+
+            <div class="section-header">
+
+                <div>
+                    <h2>Popular Hotels</h2>
+                    <p>Explore our most popular places to stay</p>
+                </div>
+
+                <button class="btn btn-outline" id="viewAllButton" type="button">
+                    View All
+                </button>
+
+            </div>
+
+
+            <!-- HOTEL CARD -->
+            <div class="hotel-grid">
+
+                <article class="hotel-card" data-destination="phuket thailand" data-price="2500" data-capacity="2" data-image="https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=900&q=85" data-amenities="วิวทะเล · สระว่ายน้ำ · Wi-Fi ฟรี">
+
+                    <div class="hotel-image image-one">
+                        <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=900&q=85" alt="ชายหาดและทะเลสีฟ้าที่ภูเก็ต" loading="lazy">
+                    </div>
+
+                    <div class="hotel-info">
+
+                        <h3>Ocean Blue Resort</h3>
+
+                        <div class="location">
+                            📍 Phuket, Thailand
+                        </div>
+
+                        <div class="hotel-bottom">
+
+                            <div class="rating">
+                                ★ 4.8
+                            </div>
+
+                            <div class="price">
+                                ฿2,500
+                                <small>/night</small>
+                            </div>
+
+                        </div>
+
+                        <br>
+
+                        <button class="btn btn-secondary details-button" type="button">
+                            View Details
+                        </button>
+
+                    </div>
+
+                </article>
+
+
+                <article class="hotel-card" data-destination="krabi thailand" data-price="1900" data-capacity="2" data-image="https://images.unsplash.com/photo-1584132967334-10e028bd69f7?auto=format&fit=crop&w=900&q=85" data-amenities="ห้องพักกว้าง · อาหารเช้า · ที่จอดรถ">
+
+                    <div class="hotel-image image-two">
+                        <img src="https://images.unsplash.com/photo-1540541338287-41700207dee6?auto=format&fit=crop&w=900&q=85" alt="สระว่ายน้ำรีสอร์ตท่ามกลางธรรมชาติที่กระบี่" loading="lazy">
+                    </div>
+
+                    <div class="hotel-info">
+
+                        <h3>Teal Paradise Hotel</h3>
+
+                        <div class="location">
+                            📍 Krabi, Thailand
+                        </div>
+
+                        <div class="hotel-bottom">
+
+                            <div class="rating">
+                                ★ 4.7
+                            </div>
+
+                            <div class="price">
+                                ฿1,900
+                                <small>/night</small>
+                            </div>
+
+                        </div>
+
+                        <br>
+
+                        <button class="btn btn-secondary details-button" type="button">
+                            View Details
+                        </button>
+
+                    </div>
+
+                </article>
+
+
+                <article class="hotel-card" data-destination="koh samui thailand" data-price="3200" data-capacity="2" data-image="https://images.unsplash.com/photo-1601918774946-25832a4be0d6?auto=format&fit=crop&w=900&q=85" data-amenities="ห้องติดทะเล · สปา · รถรับส่งสนามบิน">
+
+                    <div class="hotel-image image-three">
+                        <img src="https://images.unsplash.com/photo-1564501049412-61c2a3083791?auto=format&fit=crop&w=900&q=85" alt="โรงแรมหรูริมชายหาดที่เกาะสมุย" loading="lazy">
+                    </div>
+
+                    <div class="hotel-info">
+
+                        <h3>Luxury Beach Resort</h3>
+
+                        <div class="location">
+                            📍 Koh Samui, Thailand
+                        </div>
+
+                        <div class="hotel-bottom">
+
+                            <div class="rating">
+                                ★ 4.9
+                            </div>
+
+                            <div class="price">
+                                ฿3,200
+                                <small>/night</small>
+                            </div>
+
+                        </div>
+
+                        <br>
+
+                        <button class="btn btn-secondary details-button" type="button">
+                            View Details
+                        </button>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             PROMOTION SECTION
+        ========================== -->
+        <section id="deals">
+
+            <div class="promo">
+
+                <div>
+                    <h2>Special Deal for Your Next Trip 🎉</h2>
+
+                    <p>
+                        Get up to 30% off selected hotels with DealRoom.
+                    </p>
+                </div>
+
+                <button class="btn" id="exploreDealsButton" type="button">
+                    Explore Deals
+                </button>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================
+         FOOTER
+    ========================== -->
+    <footer id="about">
+
+        <div class="footer-container">
+
+            <div>
+
+                <div class="footer-logo">
+                    🏨 DealRoom
+                </div>
+
+                <p class="footer-description">
+                    Your trusted hotel booking platform.
+                    Find the perfect room at the best price.
+                </p>
+
+            </div>
+
+
+            <div>
+
+                <h4>Company</h4>
+
+                <ul>
+                    <li>About Us</li>
+                    <li>Contact</li>
+                    <li>Careers</li>
+                </ul>
+
+            </div>
+
+
+            <div>
+
+                <h4>Support</h4>
+
+                <ul>
+                    <li>Help Center</li>
+                    <li>FAQ</li>
+                    <li>Privacy Policy</li>
+                </ul>
+
+            </div>
+
+
+            <div>
+
+                <h4>Follow Us</h4>
+
+                <ul>
+                    <li>Facebook</li>
+                    <li>Instagram</li>
+                    <li>Line</li>
+                </ul>
+
+            </div>
+
+        </div>
+
+
+        <div class="copyright">
+            © 2026 DealRoom. All Rights Reserved.
+        </div>
+
+    </footer>
+
+    <div class="modal-backdrop" id="loginModal" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
+        <div class="login-modal">
+            <button class="modal-close" id="closeLogin" type="button" aria-label="Close login">&times;</button>
+            <h2 id="loginTitle">Log In</h2>
+            <p id="authDescription">Enter your name and password to continue.</p>
+
+            <form id="loginForm" class="auth-form" novalidate>
+                <div class="input-group">
+                    <label for="loginName">ชื่อผู้ใช้</label>
+                    <input id="loginName" name="loginName" type="text" autocomplete="username" placeholder="Enter your name" required>
+                </div>
+                <div class="input-group">
+                    <label for="loginPassword">รหัสผ่าน</label>
+                    <input id="loginPassword" name="loginPassword" type="password" autocomplete="current-password" placeholder="Enter your password" required>
+                </div>
+                <div class="error-message" id="loginError" role="alert" aria-live="polite"></div>
+                <button class="btn btn-primary search-btn" type="submit">เข้าสู่ระบบ</button>
+                <div class="success-message" id="loginSuccess" role="status" aria-live="polite"></div>
+                <button class="auth-switch" id="showSignup" type="button">ยังไม่มีบัญชี? Sign Up</button>
+            </form>
+
+            <form id="signupForm" class="auth-form is-hidden" novalidate>
+                <div class="input-group">
+                    <label for="signupName">ชื่อผู้ใช้</label>
+                    <input id="signupName" name="signupName" type="text" autocomplete="name" placeholder="Enter your name" required>
+                </div>
+                <div class="input-group">
+                    <label for="signupEmail">อีเมล</label>
+                    <input id="signupEmail" name="signupEmail" type="email" autocomplete="email" placeholder="Enter your email" required>
+                </div>
+                <div class="input-group">
+                    <label for="signupPassword">รหัสผ่าน</label>
+                    <input id="signupPassword" name="signupPassword" type="password" autocomplete="new-password" placeholder="Create a password" minlength="4" required>
+                </div>
+                <div class="error-message" id="signupError" role="alert" aria-live="polite"></div>
+                <button class="btn btn-primary search-btn" type="submit">บันทึกและสมัครสมาชิก</button>
+                <div class="success-message" id="signupSuccess" role="status" aria-live="polite"></div>
+                <button class="auth-switch" id="showLogin" type="button">มีบัญชีแล้ว? Log In</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal-backdrop" id="detailsModal" role="dialog" aria-modal="true" aria-labelledby="detailsTitle">
+        <div class="details-modal">
+            <button class="modal-close" id="closeDetails" type="button" aria-label="Close details">&times;</button>
+            <h2 id="detailsTitle">Hotel details</h2>
+            <img class="details-image" id="detailsImage" src="" alt="รายละเอียดภายในโรงแรม">
+            <p id="detailsLocation"></p>
+            <p id="detailsCapacity"></p>
+            <p class="details-amenities" id="detailsAmenities"></p>
+
+            <div class="input-group">
+                <label for="detailsGuests">จำนวนผู้เข้าพัก</label>
+                <select id="detailsGuests">
+                    <option value="1">1 Guest</option>
+                    <option value="2">2 Guests</option>
+                    <option value="3">3 Guests</option>
+                    <option value="4">4 Guests</option>
+                    <option value="5">5+ Guests</option>
+                </select>
+            </div>
+
+            <div class="details-price-box">
+                <div>ราคารวมต่อคืน</div>
+                <div class="details-price" id="detailsTotalPrice"></div>
+                <small id="detailsPriceNote"></small>
+            </div>
+            <button class="btn btn-primary search-btn" id="bookDetailsButton" type="button">จองที่พักนี้</button>
+        </div>
+    </div>
+    <script src="script.js"></script>
+
+</body>
+</html>
