@@ -1,0 +1,2490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DealRoom - Hotel Booking</title>
+
+    <style>
+        /* =========================
+   RESPONSIVE DESIGN
+========================= */
+
+html {
+    overflow-x: hidden;
+}
+
+body {
+    min-width: 320px;
+    overflow-x: hidden;
+}
+
+img,
+video {
+    max-width: 100%;
+    height: auto;
+}
+
+.hero h1 {
+    font-size: clamp(2rem, 5vw, 3rem);
+}
+
+.hero p {
+    font-size: clamp(0.95rem, 2vw, 1.1rem);
+}
+
+main,
+.header-container,
+.footer-container {
+    width: 100%;
+}
+
+button,
+input,
+select {
+    font: inherit;
+}
+
+@media (max-width: 1024px) {
+    .header-container {
+        padding: 0 20px;
+    }
+
+    .hero {
+        gap: 30px;
+        padding: 55px 20px;
+    }
+
+    .hero-card {
+        width: min(380px, 100%);
+    }
+
+    section {
+        padding: 45px 20px;
+    }
+
+    .hotel-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .dashboard-grid,
+    .content-page-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .header-container {
+        height: auto;
+        min-height: 70px;
+    }
+
+    nav {
+        display: none;
+    }
+
+    .hero {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 40px 20px;
+    }
+
+    .hero-content {
+        text-align: center;
+    }
+
+    .hero p {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .hero-buttons {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .hero-card {
+        width: 100%;
+        max-width: 520px;
+        margin: auto;
+    }
+
+    .hotel-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .footer-container {
+        grid-template-columns: repeat(2, 1fr);
+        padding: 35px 20px;
+    }
+
+    .header-container {
+        gap: 16px;
+    }
+
+    .logo {
+        flex-shrink: 0;
+    }
+
+    .nav-buttons {
+        margin-left: auto;
+    }
+
+    .dashboard-card-wide {
+        grid-column: span 2;
+    }
+}
+
+@media (max-width: 480px) {
+    .logo {
+        font-size: 20px;
+    }
+
+    .logo-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 18px;
+    }
+
+    .nav-buttons {
+        display: none;
+    }
+
+    .hero {
+        padding: 30px 15px;
+    }
+
+    section {
+        padding: 35px 15px;
+    }
+
+    .hero h1 {
+        font-size: clamp(1.8rem, 9vw, 2.4rem);
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+    }
+
+    .hero-buttons .btn,
+    .search-btn {
+        width: 100%;
+    }
+
+    .section-header {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .section-header h2 {
+        font-size: 24px;
+    }
+
+    .promo {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+        padding: 25px 20px;
+    }
+
+    .promo .btn {
+        width: 100%;
+    }
+
+    .footer-container {
+        grid-template-columns: 1fr;
+    }
+
+    .hotel-image {
+        height: 160px;
+    }
+
+    .header-container {
+        padding: 12px 15px;
+    }
+
+    .header-container,
+    .dashboard-header,
+    .dashboard-toolbar,
+    .dashboard-card-footer,
+    .booking-row {
+        align-items: flex-start;
+    }
+
+    .nav-buttons {
+        gap: 6px;
+    }
+
+    .nav-buttons .btn,
+    .user-name {
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+
+    .login-modal,
+    .details-modal {
+        max-height: 90vh;
+        overflow-y: auto;
+        padding: 22px;
+    }
+
+    .dashboard-page,
+    .content-page {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+}
+
+/* ปรับรูปแบบเมื่ออุปกรณ์อยู่แนวนอน */
+@media (max-width: 768px) and (orientation: landscape) {
+    .hero {
+        flex-direction: row;
+        align-items: center;
+        padding: 30px 20px;
+    }
+
+    .hero-content {
+        text-align: left;
+    }
+
+    .hero-card {
+        max-width: 380px;
+    }
+
+    .hotel-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* ปรับรูปแบบเมื่ออุปกรณ์อยู่แนวตั้ง */
+@media (max-width: 768px) and (orientation: portrait) {
+    .hero {
+        flex-direction: column;
+    }
+
+    .hotel-grid {
+        grid-template-columns: 1fr;
+    }
+}
+        /* =========================
+           DESIGN SYSTEM COLORS
+        ========================== */
+        :root {
+            --primary: #2563EB;
+            --deep-blue: #1E3A8A;
+            --sky-blue: #60A5FA;
+
+            --teal: #0F766E;
+            --mint: #99F6E4;
+            --purple: #7C3AED;
+
+            --orange: #F97316;
+            --yellow: #FBBF24;
+            --pink: #EC4899;
+
+            --soft-white: #F8FAFC;
+            --pure-white: #FFFFFF;
+            --light-blue: #EFF6FF;
+
+            --primary-text: #172554;
+            --secondary-text: #475569;
+            --muted-text: #94A3B8;
+
+            --success: #16A34A;
+            --error: #DC2626;
+            --warning: #F59E0B;
+
+            --shadow: 0 8px 25px rgba(30, 58, 138, 0.10);
+        }
+
+        /* =========================
+           RESET
+        ========================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: var(--soft-white);
+            color: var(--primary-text);
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* =========================
+           HEADER
+        ========================== */
+        header {
+            background: var(--pure-white);
+            border-bottom: 1px solid #E2E8F0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: auto;
+            height: 78px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 25px;
+        }
+
+        /* =========================
+           LOGO
+        ========================== */
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 25px;
+            font-weight: bold;
+            color: var(--deep-blue);
+        }
+
+        .logo-icon {
+            width: 43px;
+            height: 43px;
+            background: linear-gradient(135deg, var(--primary), var(--purple));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 22px;
+            box-shadow: 0 5px 12px rgba(37, 99, 235, 0.25);
+        }
+
+        .logo span {
+            color: var(--primary);
+        }
+
+        /* =========================
+           NAVIGATION
+        ========================== */
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        nav a {
+            font-size: 15px;
+            color: var(--secondary-text);
+            font-weight: 500;
+            transition: 0.2s;
+        }
+
+        nav a:hover {
+            color: var(--primary);
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .user-name {
+            display: none;
+            align-items: center;
+            color: var(--deep-blue);
+            font-size: 14px;
+            font-weight: bold;
+            padding: 0 10px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+        }
+
+        .header-logout {
+            display: none;
+        }
+
+        .header-bookings {
+            display: none;
+        }
+
+        /* =========================
+           BUTTONS
+        ========================== */
+        .btn {
+            border: none;
+            border-radius: 7px;
+            padding: 11px 20px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        /* Primary Button */
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--sky-blue);
+        }
+
+        .btn-primary:active {
+            background: var(--deep-blue);
+        }
+
+        /* Secondary Button */
+        .btn-secondary {
+            background: white;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--light-blue);
+        }
+
+        /* Outline Button */
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Disabled */
+        .btn-disabled {
+            background: #CBD5E1;
+            color: white;
+            cursor: not-allowed;
+        }
+
+        /* =========================
+           LOGIN MODAL / VALIDATION
+        ========================== */
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(23, 37, 84, 0.45);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            z-index: 200;
+        }
+
+        .modal-backdrop.is-open {
+            display: flex;
+        }
+
+        .login-modal {
+            width: min(420px, 100%);
+            background: var(--pure-white);
+            border: 1px solid #E2E8F0;
+            border-radius: 14px;
+            padding: 28px;
+            box-shadow: 0 20px 45px rgba(23, 37, 84, 0.22);
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 12px;
+            right: 14px;
+            border: none;
+            background: transparent;
+            color: var(--secondary-text);
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .login-modal h2 {
+            color: var(--deep-blue);
+            margin-bottom: 8px;
+        }
+
+        .login-modal p {
+            color: var(--secondary-text);
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .auth-form.is-hidden {
+            display: none;
+        }
+
+        .auth-switch {
+            background: none;
+            border: none;
+            color: var(--primary);
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: bold;
+            margin-top: 16px;
+            padding: 0;
+        }
+
+        .login-modal .input-group {
+            margin-bottom: 14px;
+        }
+
+        .login-modal input[aria-invalid="true"] {
+            border-color: var(--error);
+        }
+
+        .error-message {
+            min-height: 20px;
+            color: var(--error);
+            font-size: 13px;
+            font-weight: bold;
+            margin: 2px 0 12px;
+        }
+
+        .success-message {
+            color: var(--success);
+            font-size: 13px;
+            font-weight: bold;
+            margin-top: 12px;
+        }
+
+        .details-modal {
+            width: min(480px, 100%);
+            background: var(--pure-white);
+            border: 1px solid #E2E8F0;
+            border-radius: 14px;
+            padding: 28px;
+            box-shadow: 0 20px 45px rgba(23, 37, 84, 0.22);
+            position: relative;
+        }
+
+        .details-modal h2 {
+            color: var(--deep-blue);
+            margin-bottom: 8px;
+        }
+
+        .details-modal p {
+            color: var(--secondary-text);
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        .details-price-box {
+            background: var(--light-blue);
+            border: 1px solid #BFDBFE;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 18px 0;
+        }
+
+        .details-image {
+            width: 100%;
+            height: 170px;
+            border-radius: 8px;
+            object-fit: cover;
+            margin: 12px 0 18px;
+        }
+
+        .details-amenities {
+            color: var(--secondary-text);
+            font-size: 14px;
+            line-height: 1.7;
+            margin-bottom: 16px;
+        }
+
+        .booking-queue {
+            display: grid;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .queue-item {
+            align-items: center;
+            border-top: 1px solid #E2E8F0;
+            display: flex;
+            justify-content: space-between;
+            gap: 14px;
+            padding-top: 12px;
+        }
+
+        .queue-item strong {
+            color: var(--primary-text);
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .queue-item small {
+            color: var(--secondary-text);
+        }
+
+        .queue-status {
+            background: #DCFCE7;
+            border-radius: 7px;
+            color: var(--success);
+            font-size: 12px;
+            font-weight: bold;
+            padding: 7px 10px;
+            white-space: nowrap;
+        }
+
+        .details-price {
+            color: var(--primary);
+            font-size: 26px;
+            font-weight: bold;
+        }
+
+        .details-price small {
+            color: var(--secondary-text);
+            font-size: 13px;
+            font-weight: normal;
+        }
+
+        .dashboard-page {
+            display: none;
+            padding: 50px 25px 80px;
+        }
+
+        .dashboard-page.is-visible {
+            display: block;
+        }
+
+        .content-page {
+            display: none;
+            max-width: 1200px;
+            margin: auto;
+            padding: 60px 25px 90px;
+        }
+
+        .content-page.is-visible {
+            display: block;
+        }
+
+        .content-page-header {
+            margin-bottom: 28px;
+        }
+
+        .content-page-header h1 {
+            color: var(--deep-blue);
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        .content-page-header p {
+            color: var(--secondary-text);
+            line-height: 1.6;
+        }
+
+        .content-page-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
+        }
+
+        .content-page-card {
+            background: white;
+            border: 1px solid #E2E8F0;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            padding: 24px;
+        }
+
+        .content-page-card h2 {
+            color: var(--deep-blue);
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .content-page-card p {
+            color: var(--secondary-text);
+            line-height: 1.6;
+            margin-bottom: 18px;
+        }
+
+        .content-page-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 28px;
+        }
+
+        @media (max-width: 768px) {
+            .content-page-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .dashboard-header,
+        .dashboard-toolbar,
+        .dashboard-card-header,
+        .dashboard-card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .dashboard-header {
+            margin-bottom: 30px;
+        }
+
+        .dashboard-kicker {
+            color: var(--purple);
+            font-size: 13px;
+            font-weight: bold;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .dashboard-header h1 {
+            color: var(--deep-blue);
+            font-size: 34px;
+            margin-bottom: 8px;
+        }
+
+        .dashboard-header p {
+            color: var(--secondary-text);
+        }
+
+        .dashboard-toolbar {
+            justify-content: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .dashboard-tabs {
+            display: flex;
+            gap: 0;
+        }
+
+        .dashboard-tabs .btn {
+            border-radius: 0;
+        }
+
+        .dashboard-tabs .btn:first-child {
+            border-radius: 7px 0 0 7px;
+        }
+
+        .dashboard-tabs .btn:last-child {
+            border-radius: 0 7px 7px 0;
+        }
+
+        .dashboard-tabs .is-active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
+        }
+
+        .dashboard-card {
+            background: white;
+            border: 1px solid #E2E8F0;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            padding: 22px;
+        }
+
+        .dashboard-card-wide {
+            grid-column: span 2;
+        }
+
+        .dashboard-card h2 {
+            color: var(--deep-blue);
+            font-size: 20px;
+        }
+
+        .dashboard-card p {
+            color: var(--secondary-text);
+            line-height: 1.6;
+        }
+
+        .stat-number {
+            color: var(--primary);
+            font-size: 32px;
+            font-weight: bold;
+            margin: 18px 0 4px;
+        }
+
+        .booking-row {
+            border-top: 1px solid #E2E8F0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding-top: 16px;
+            margin-top: 18px;
+        }
+
+        .booking-row strong {
+            color: var(--primary-text);
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .booking-price {
+            color: var(--primary);
+            font-size: 20px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .btn-danger {
+            background: var(--error);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #B91C1C;
+        }
+
+        .pagination {
+            display: flex;
+            gap: 6px;
+            margin-top: 22px;
+        }
+
+        .pagination .btn {
+            min-width: 38px;
+            padding: 9px 12px;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .dashboard-card-wide {
+                grid-column: span 1;
+            }
+
+            .dashboard-header,
+            .dashboard-toolbar {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+        }
+
+        /* =========================
+           MAIN / HERO SECTION
+        ========================== */
+        main {
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .hero {
+            min-height: 500px;
+            padding: 75px 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 50px;
+        }
+
+        .hero-content {
+            flex: 1;
+        }
+
+        .hero-label {
+            display: inline-block;
+            background: #EDE9FE;
+            color: var(--purple);
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 18px;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            line-height: 1.15;
+            margin-bottom: 20px;
+            color: var(--deep-blue);
+        }
+
+        .hero h1 span {
+            color: var(--primary);
+        }
+
+        .hero p {
+            color: var(--secondary-text);
+            font-size: 17px;
+            line-height: 1.7;
+            max-width: 540px;
+            margin-bottom: 30px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        /* =========================
+           HERO CARD
+        ========================== */
+        .hero-card {
+            width: 420px;
+            background: white;
+            border-radius: 20px;
+            padding: 28px;
+            box-shadow: var(--shadow);
+            border: 1px solid #E2E8F0;
+        }
+
+        .hero-card h3 {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        /* =========================
+           SEARCH FORM
+        ========================== */
+        .search-box {
+            display: grid;
+            gap: 15px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .input-group label {
+            font-size: 13px;
+            color: var(--secondary-text);
+            font-weight: bold;
+        }
+
+        .input-group input,
+        .input-group select {
+            height: 45px;
+            border: 1px solid #CBD5E1;
+            border-radius: 7px;
+            padding: 0 12px;
+            color: var(--secondary-text);
+            outline: none;
+            background: white;
+        }
+
+        .input-group input:focus,
+        .input-group select:focus {
+            border-color: var(--primary);
+        }
+
+        .search-btn {
+            width: 100%;
+            margin-top: 5px;
+            height: 46px;
+        }
+
+        .search-result {
+            min-height: 18px;
+            color: var(--secondary-text);
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        .search-result.error-message {
+            margin: 0;
+        }
+
+        /* =========================
+           SECTION
+        ========================== */
+        section {
+            padding: 55px 25px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .section-header h2 {
+            font-size: 28px;
+            color: var(--deep-blue);
+        }
+
+        .section-header p {
+            color: var(--secondary-text);
+            margin-top: 7px;
+        }
+
+        /* =========================
+           HOTEL CARDS
+        ========================== */
+        .hotel-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
+        }
+
+        .hotel-card {
+            background: white;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            border: 1px solid #E2E8F0;
+            transition: 0.25s;
+        }
+
+        .hotel-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(30, 58, 138, 0.15);
+        }
+
+        .hotel-image {
+            height: 190px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 55px;
+            color: white;
+            overflow: hidden;
+        }
+
+        .hotel-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .image-one {
+            background: linear-gradient(135deg, #60A5FA, #2563EB);
+        }
+
+        .image-two {
+            background: linear-gradient(135deg, #0F766E, #14B8A6);
+        }
+
+        .image-three {
+            background: linear-gradient(135deg, #7C3AED, #A855F7);
+        }
+
+        .hotel-info {
+            padding: 20px;
+        }
+
+        .hotel-info h3 {
+            font-size: 19px;
+            margin-bottom: 8px;
+        }
+
+        .location {
+            color: var(--secondary-text);
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .hotel-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .rating {
+            color: var(--warning);
+            font-weight: bold;
+        }
+
+        .price {
+            color: var(--primary);
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .price small {
+            color: var(--secondary-text);
+            font-size: 12px;
+            font-weight: normal;
+        }
+
+        /* =========================
+           PROMOTION SECTION
+        ========================== */
+        .promo {
+            background: linear-gradient(135deg, var(--deep-blue), var(--primary));
+            color: white;
+            border-radius: 18px;
+            padding: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .promo h2 {
+            margin-bottom: 8px;
+        }
+
+        .promo p {
+            opacity: 0.9;
+        }
+
+        .promo .btn {
+            background: white;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .promo .btn:hover {
+            background: var(--mint);
+        }
+
+        /* =========================
+           FOOTER
+        ========================== */
+        footer {
+            background: var(--deep-blue);
+            color: white;
+            margin-top: 50px;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 40px 25px;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 35px;
+        }
+
+        .footer-logo {
+            font-size: 23px;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .footer-description {
+            color: #CBD5E1;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        footer h4 {
+            margin-bottom: 15px;
+        }
+
+        footer ul {
+            list-style: none;
+        }
+
+        footer li {
+            margin-bottom: 10px;
+            color: #CBD5E1;
+            font-size: 14px;
+        }
+
+        .copyright {
+            text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.15);
+            padding: 18px;
+            color: #CBD5E1;
+            font-size: 13px;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================== */
+        @media (max-width: 900px) {
+
+            nav {
+                display: none;
+            }
+
+            .hero {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .hero-card {
+                width: 100%;
+            }
+
+            .hotel-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .hero h1 {
+                font-size: 36px;
+            }
+
+            @media (max-width: 480px) {
+                .header-container {
+                    min-height: 64px;
+                }
+
+                .logo {
+                    font-size: 18px;
+                    gap: 7px;
+                }
+
+                .logo-icon {
+                    width: 34px;
+                    height: 34px;
+                    border-radius: 9px;
+                    font-size: 17px;
+                }
+
+                .nav-buttons {
+                    max-width: 52%;
+                }
+
+                .nav-buttons .btn,
+                .user-name {
+                    font-size: 12px;
+                    padding: 8px 6px;
+                }
+
+                .header-bookings {
+                    max-width: 90px;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                }
+
+                .header-logout {
+                    max-width: 70px;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                }
+
+                .dashboard-header h1,
+                .content-page-header h1 {
+                    font-size: 28px;
+                }
+
+                .dashboard-grid,
+                .content-page-grid {
+                    grid-template-columns: 1fr;
+                }
+
+                .dashboard-card-wide {
+                    grid-column: span 1;
+                }
+
+                .dashboard-tabs,
+                .pagination {
+                    width: 100%;
+                }
+
+                .dashboard-tabs .btn,
+                .pagination .btn {
+                    flex: 1;
+                    min-width: 0;
+                }
+
+                .booking-row {
+                    flex-direction: column;
+                }
+
+                .booking-price {
+                    white-space: normal;
+                }
+
+                .content-page-actions .btn,
+                .dashboard-toolbar > .btn {
+                    width: 100%;
+                }
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+            }
+
+            .promo {
+                flex-direction: column;
+                gap: 20px;
+                align-items: flex-start;
+            }
+
+            .footer-container {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-buttons {
+                display: none;
+            }
+        }
+
+        @media (min-width: 601px) and (max-width: 1024px) {
+            .hotel-grid,
+            .dashboard-grid,
+            .content-page-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .dashboard-card-wide {
+                grid-column: span 2;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .hotel-grid,
+            .dashboard-grid,
+            .content-page-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .dashboard-card-wide {
+                grid-column: span 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- =========================
+         HEADER
+    ========================== -->
+    <header id="top">
+
+        <div class="header-container">
+
+            <!-- LOGO -->
+            <div class="logo">
+                <div class="logo-icon">🏨</div>
+                Deal<span>Room</span>
+            </div>
+
+            <!-- NAVIGATION -->
+            <nav>
+                <a href="#home" class="page-nav" data-page="home">Home</a>
+                <a href="#hotels-page" class="page-nav" data-page="hotels">Hotels</a>
+                <a href="#deals-page" class="page-nav" data-page="deals">Deals</a>
+                <a href="#about-page" class="page-nav" data-page="about">About Us</a>
+            </nav>
+
+            <div class="nav-buttons">
+                <button class="btn btn-outline" id="loginButton" type="button">Log In</button>
+                <button class="btn btn-primary" id="signupButton" type="button">Sign Up</button>
+                <button class="user-name" id="headerUserName" type="button" aria-label="Open Dashboard"></button>
+                <button class="btn btn-outline header-bookings" id="headerBookingsButton" type="button">Booking Queue</button>
+                <button class="btn btn-danger header-logout" id="headerLogoutButton" type="button">Log Out</button>
+            </div>
+
+        </div>
+
+    </header>
+
+    <section class="content-page" id="contentPage" aria-live="polite"></section>
+
+    <section class="dashboard-page" id="dashboardPage" aria-labelledby="dashboardTitle">
+        <div class="dashboard-header">
+            <div>
+                <div class="dashboard-kicker">DealRoom Dashboard</div>
+                <h1 id="dashboardTitle">Welcome back, <span id="dashboardUserName"></span></h1>
+                <p>จัดการการจองและดูข้อมูลการเข้าพักของคุณ</p>
+            </div>
+            <button class="btn btn-danger" id="logoutButton" type="button">Log Out</button>
+        </div>
+
+        <div class="dashboard-toolbar">
+            <div class="dashboard-tabs" role="tablist" aria-label="Dashboard views">
+                <button class="btn btn-outline is-active dashboard-tab" data-view="overview" type="button">Overview</button>
+                <button class="btn btn-outline dashboard-tab" data-view="bookings" type="button">My Bookings</button>
+            </div>
+            <button class="btn btn-primary" id="newBookingButton" type="button">+ New Booking</button>
+        </div>
+
+        <div class="dashboard-grid" id="dashboardContent">
+            <article class="dashboard-card">
+                <div class="dashboard-card-header">
+                    <h2>Upcoming Trips</h2>
+                    <span>✦</span>
+                </div>
+                <div class="stat-number" id="upcomingTripsCount">0</div>
+                <p>การจองที่กำลังจะมาถึง</p>
+            </article>
+
+            <article class="dashboard-card">
+                <div class="dashboard-card-header">
+                    <h2>Total Nights</h2>
+                    <span>▣</span>
+                </div>
+                <div class="stat-number" id="totalNightsCount">0</div>
+                <p>คืนที่เข้าพักในปีนี้</p>
+            </article>
+
+            <article class="dashboard-card">
+                <div class="dashboard-card-header">
+                    <h2>Saved Deals</h2>
+                    <span>♡</span>
+                </div>
+                <div class="stat-number" id="savedDealsCount">0</div>
+                <p>ดีลที่บันทึกไว้</p>
+            </article>
+
+            <article class="dashboard-card dashboard-card-wide">
+                <div class="dashboard-card-header">
+                    <div>
+                        <h2>Upcoming Booking</h2>
+                        <p>รายการเข้าพักถัดไปของคุณ</p>
+                    </div>
+                    <button class="btn btn-outline" id="viewAllBookingsButton" type="button">View All</button>
+                </div>
+                <div class="booking-row" id="upcomingBookingRow">
+                    <div>
+                        <strong id="upcomingBookingName">ยังไม่มีรายการจอง</strong>
+                        <p id="upcomingBookingInfo">เลือกโรงแรมเพื่อเพิ่มรายการจอง</p>
+                    </div>
+                    <div class="booking-price" id="upcomingBookingPrice">-</div>
+                </div>
+                <div class="dashboard-card-footer">
+                    <p id="upcomingBookingGuests">-</p>
+                    <button class="btn btn-danger" id="cancelBookingButton" type="button" disabled>Cancel</button>
+                </div>
+            </article>
+
+            <article class="dashboard-card dashboard-card-wide">
+                <div class="dashboard-card-header">
+                    <div>
+                        <h2>Booking Queue</h2>
+                        <p>คิวการจองโรงแรมของคุณ</p>
+                    </div>
+                    <span>▤</span>
+                </div>
+                <div class="booking-queue" id="bookingQueue"></div>
+            </article>
+
+            <article class="dashboard-card">
+                <div class="dashboard-card-header">
+                    <h2>Price View</h2>
+                    <span>฿</span>
+                </div>
+                <div class="dashboard-tabs" role="tablist" aria-label="Price period">
+                    <button class="btn btn-primary is-active period-tab" type="button">Monthly</button>
+                    <button class="btn btn-outline period-tab" type="button">Yearly</button>
+                </div>
+                <p class="stat-number" id="totalSpendAmount">฿0</p>
+                <p>ยอดใช้จ่ายโดยประมาณ</p>
+            </article>
+        </div>
+
+        <div class="pagination" aria-label="Dashboard pages">
+            <button class="btn btn-outline page-button" data-page="1" type="button" aria-label="Previous page">←</button>
+            <button class="btn btn-primary page-button" data-page="1" type="button">1</button>
+            <button class="btn btn-outline page-button" data-page="2" type="button">2</button>
+            <button class="btn btn-outline page-button" data-page="3" type="button">3</button>
+            <button class="btn btn-outline page-button" data-page="3" type="button" aria-label="Next page">→</button>
+        </div>
+    </section>
+
+
+    <!-- =========================
+         MAIN
+    ========================== -->
+    <main>
+
+        <!-- =========================
+             HERO SECTION
+        ========================== -->
+        <section class="hero">
+
+            <div class="hero-content">
+
+                <div class="hero-label">
+                    ✦ BEST HOTEL DEALS
+                </div>
+
+                <h1>
+                    Find Your <span>Perfect Stay</span>
+                </h1>
+
+                <p>
+                    Discover comfortable hotels, amazing destinations,
+                    and exclusive deals. Book your next stay easily with DealRoom.
+                </p>
+
+                <div class="hero-buttons">
+                    <button class="btn btn-primary" id="bookNowButton" type="button">
+                        Book Now
+                    </button>
+
+                    <button class="btn btn-secondary" id="heroDetailsButton" type="button">
+                        View Details
+                    </button>
+                </div>
+
+            </div>
+
+
+            <!-- =========================
+                 SEARCH CARD
+            ========================== -->
+            <div class="hero-card">
+
+                <h3>🔎 Search Hotels</h3>
+
+                <div class="search-box">
+
+                    <div class="input-group">
+                        <label for="destinationInput">Destination</label>
+                        <input
+                            id="destinationInput"
+                            type="text"
+                            placeholder="Where do you want to stay?"
+                        >
+                    </div>
+
+                    <div class="input-group">
+                        <label>Check-in</label>
+                        <input id="checkInInput" type="date">
+                    </div>
+
+                    <div class="input-group">
+                        <label>Check-out</label>
+                        <input id="checkOutInput" type="date">
+                    </div>
+
+                    <div class="input-group">
+                        <label>Guests</label>
+
+                        <select id="guestInput">
+                            <option>1 Guest</option>
+                            <option>2 Guests</option>
+                            <option>3 Guests</option>
+                            <option>4 Guests</option>
+                            <option>5+ Guests</option>
+                        </select>
+
+                    </div>
+
+                    <button class="btn btn-primary search-btn" id="searchButton" type="button">
+                        Search Hotels
+                    </button>
+                    <div class="search-result" id="searchResult" role="status" aria-live="polite"></div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             POPULAR HOTELS SECTION
+        ========================== -->
+        <section id="hotels">
+
+            <div class="section-header">
+
+                <div>
+                    <h2>Popular Hotels</h2>
+                    <p>Explore our most popular places to stay</p>
+                </div>
+
+                <button class="btn btn-outline" id="viewAllButton" type="button">
+                    View All
+                </button>
+
+            </div>
+
+
+            <!-- HOTEL CARD -->
+            <div class="hotel-grid">
+
+                <article class="hotel-card" data-destination="phuket thailand" data-price="2500" data-capacity="2" data-image="https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=900&q=85" data-amenities="วิวทะเล · สระว่ายน้ำ · Wi-Fi ฟรี">
+
+                    <div class="hotel-image image-one">
+                        <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=900&q=85" alt="ชายหาดและทะเลสีฟ้าที่ภูเก็ต" loading="lazy">
+                    </div>
+
+                    <div class="hotel-info">
+
+                        <h3>Ocean Blue Resort</h3>
+
+                        <div class="location">
+                            📍 Phuket, Thailand
+                        </div>
+
+                        <div class="hotel-bottom">
+
+                            <div class="rating">
+                                ★ 4.8
+                            </div>
+
+                            <div class="price">
+                                ฿2,500
+                                <small>/night</small>
+                            </div>
+
+                        </div>
+
+                        <br>
+
+                        <button class="btn btn-secondary details-button" type="button">
+                            View Details
+                        </button>
+
+                    </div>
+
+                </article>
+
+
+                <article class="hotel-card" data-destination="krabi thailand" data-price="1900" data-capacity="2" data-image="https://images.unsplash.com/photo-1584132967334-10e028bd69f7?auto=format&fit=crop&w=900&q=85" data-amenities="ห้องพักกว้าง · อาหารเช้า · ที่จอดรถ">
+
+                    <div class="hotel-image image-two">
+                        <img src="https://images.unsplash.com/photo-1540541338287-41700207dee6?auto=format&fit=crop&w=900&q=85" alt="สระว่ายน้ำรีสอร์ตท่ามกลางธรรมชาติที่กระบี่" loading="lazy">
+                    </div>
+
+                    <div class="hotel-info">
+
+                        <h3>Teal Paradise Hotel</h3>
+
+                        <div class="location">
+                            📍 Krabi, Thailand
+                        </div>
+
+                        <div class="hotel-bottom">
+
+                            <div class="rating">
+                                ★ 4.7
+                            </div>
+
+                            <div class="price">
+                                ฿1,900
+                                <small>/night</small>
+                            </div>
+
+                        </div>
+
+                        <br>
+
+                        <button class="btn btn-secondary details-button" type="button">
+                            View Details
+                        </button>
+
+                    </div>
+
+                </article>
+
+
+                <article class="hotel-card" data-destination="koh samui thailand" data-price="3200" data-capacity="2" data-image="https://images.unsplash.com/photo-1601918774946-25832a4be0d6?auto=format&fit=crop&w=900&q=85" data-amenities="ห้องติดทะเล · สปา · รถรับส่งสนามบิน">
+
+                    <div class="hotel-image image-three">
+                        <img src="https://images.unsplash.com/photo-1564501049412-61c2a3083791?auto=format&fit=crop&w=900&q=85" alt="โรงแรมหรูริมชายหาดที่เกาะสมุย" loading="lazy">
+                    </div>
+
+                    <div class="hotel-info">
+
+                        <h3>Luxury Beach Resort</h3>
+
+                        <div class="location">
+                            📍 Koh Samui, Thailand
+                        </div>
+
+                        <div class="hotel-bottom">
+
+                            <div class="rating">
+                                ★ 4.9
+                            </div>
+
+                            <div class="price">
+                                ฿3,200
+                                <small>/night</small>
+                            </div>
+
+                        </div>
+
+                        <br>
+
+                        <button class="btn btn-secondary details-button" type="button">
+                            View Details
+                        </button>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             PROMOTION SECTION
+        ========================== -->
+        <section id="deals">
+
+            <div class="promo">
+
+                <div>
+                    <h2>Special Deal for Your Next Trip 🎉</h2>
+
+                    <p>
+                        Get up to 30% off selected hotels with DealRoom.
+                    </p>
+                </div>
+
+                <button class="btn" id="exploreDealsButton" type="button">
+                    Explore Deals
+                </button>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================
+         FOOTER
+    ========================== -->
+    <footer id="about">
+
+        <div class="footer-container">
+
+            <div>
+
+                <div class="footer-logo">
+                    🏨 DealRoom
+                </div>
+
+                <p class="footer-description">
+                    Your trusted hotel booking platform.
+                    Find the perfect room at the best price.
+                </p>
+
+            </div>
+
+
+            <div>
+
+                <h4>Company</h4>
+
+                <ul>
+                    <li>About Us</li>
+                    <li>Contact</li>
+                    <li>Careers</li>
+                </ul>
+
+            </div>
+
+
+            <div>
+
+                <h4>Support</h4>
+
+                <ul>
+                    <li>Help Center</li>
+                    <li>FAQ</li>
+                    <li>Privacy Policy</li>
+                </ul>
+
+            </div>
+
+
+            <div>
+
+                <h4>Follow Us</h4>
+
+                <ul>
+                    <li>Facebook</li>
+                    <li>Instagram</li>
+                    <li>Line</li>
+                </ul>
+
+            </div>
+
+        </div>
+
+
+        <div class="copyright">
+            © 2026 DealRoom. All Rights Reserved.
+        </div>
+
+    </footer>
+
+    <div class="modal-backdrop" id="loginModal" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
+        <div class="login-modal">
+            <button class="modal-close" id="closeLogin" type="button" aria-label="Close login">&times;</button>
+            <h2 id="loginTitle">Log In</h2>
+            <p id="authDescription">Enter your name and password to continue.</p>
+
+            <form id="loginForm" class="auth-form" novalidate>
+                <div class="input-group">
+                    <label for="loginName">ชื่อผู้ใช้</label>
+                    <input id="loginName" name="loginName" type="text" autocomplete="username" placeholder="Enter your name" required>
+                </div>
+                <div class="input-group">
+                    <label for="loginPassword">รหัสผ่าน</label>
+                    <input id="loginPassword" name="loginPassword" type="password" autocomplete="current-password" placeholder="Enter your password" required>
+                </div>
+                <div class="error-message" id="loginError" role="alert" aria-live="polite"></div>
+                <button class="btn btn-primary search-btn" type="submit">เข้าสู่ระบบ</button>
+                <div class="success-message" id="loginSuccess" role="status" aria-live="polite"></div>
+                <button class="auth-switch" id="showSignup" type="button">ยังไม่มีบัญชี? Sign Up</button>
+            </form>
+
+            <form id="signupForm" class="auth-form is-hidden" novalidate>
+                <div class="input-group">
+                    <label for="signupName">ชื่อผู้ใช้</label>
+                    <input id="signupName" name="signupName" type="text" autocomplete="name" placeholder="Enter your name" required>
+                </div>
+                <div class="input-group">
+                    <label for="signupEmail">อีเมล</label>
+                    <input id="signupEmail" name="signupEmail" type="email" autocomplete="email" placeholder="Enter your email" required>
+                </div>
+                <div class="input-group">
+                    <label for="signupPassword">รหัสผ่าน</label>
+                    <input id="signupPassword" name="signupPassword" type="password" autocomplete="new-password" placeholder="Create a password" minlength="4" required>
+                </div>
+                <div class="error-message" id="signupError" role="alert" aria-live="polite"></div>
+                <button class="btn btn-primary search-btn" type="submit">บันทึกและสมัครสมาชิก</button>
+                <div class="success-message" id="signupSuccess" role="status" aria-live="polite"></div>
+                <button class="auth-switch" id="showLogin" type="button">มีบัญชีแล้ว? Log In</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal-backdrop" id="detailsModal" role="dialog" aria-modal="true" aria-labelledby="detailsTitle">
+        <div class="details-modal">
+            <button class="modal-close" id="closeDetails" type="button" aria-label="Close details">&times;</button>
+            <h2 id="detailsTitle">Hotel details</h2>
+            <img class="details-image" id="detailsImage" src="" alt="รายละเอียดภายในโรงแรม">
+            <p id="detailsLocation"></p>
+            <p id="detailsCapacity"></p>
+            <p class="details-amenities" id="detailsAmenities"></p>
+
+            <div class="input-group">
+                <label for="detailsGuests">จำนวนผู้เข้าพัก</label>
+                <select id="detailsGuests">
+                    <option value="1">1 Guest</option>
+                    <option value="2">2 Guests</option>
+                    <option value="3">3 Guests</option>
+                    <option value="4">4 Guests</option>
+                    <option value="5">5+ Guests</option>
+                </select>
+            </div>
+
+            <div class="details-price-box">
+                <div>ราคารวมต่อคืน</div>
+                <div class="details-price" id="detailsTotalPrice"></div>
+                <small id="detailsPriceNote"></small>
+            </div>
+            <button class="btn btn-primary search-btn" id="bookDetailsButton" type="button">จองที่พักนี้</button>
+        </div>
+    </div>
+
+    <script>
+        const loginButton = document.getElementById('loginButton');
+        const signupButton = document.getElementById('signupButton');
+        const loginModal = document.getElementById('loginModal');
+        const closeLogin = document.getElementById('closeLogin');
+        const loginForm = document.getElementById('loginForm');
+        const signupForm = document.getElementById('signupForm');
+        const loginName = document.getElementById('loginName');
+        const loginPassword = document.getElementById('loginPassword');
+        const signupName = document.getElementById('signupName');
+        const signupEmail = document.getElementById('signupEmail');
+        const signupPassword = document.getElementById('signupPassword');
+        const authDescription = document.getElementById('authDescription');
+        const loginError = document.getElementById('loginError');
+        const loginSuccess = document.getElementById('loginSuccess');
+        const signupError = document.getElementById('signupError');
+        const signupSuccess = document.getElementById('signupSuccess');
+        const savedUserKey = 'dealRoomUser';
+        const dashboardPage = document.getElementById('dashboardPage');
+        const dashboardUserName = document.getElementById('dashboardUserName');
+        const logoutButton = document.getElementById('logoutButton');
+        const headerUserName = document.getElementById('headerUserName');
+        const headerBookingsButton = document.getElementById('headerBookingsButton');
+        const headerLogoutButton = document.getElementById('headerLogoutButton');
+        const loggedInKey = 'dealRoomLoggedIn';
+        const contentPage = document.getElementById('contentPage');
+
+        function getBookingsKey() {
+            const savedUser = JSON.parse(localStorage.getItem(savedUserKey) || 'null');
+            return savedUser && savedUser.name ? `dealRoomBookings_${savedUser.name}` : 'dealRoomBookings_guest';
+        }
+
+        const contentPages = {
+            home: {
+                title: 'Welcome to DealRoom',
+                description: 'จองที่พักที่เหมาะกับคุณ พร้อมดีลพิเศษและราคาที่ชัดเจน',
+                cards: [
+                    ['ค้นหาที่พักง่าย', 'เลือกสถานที่ วันเข้าพัก และจำนวนผู้เข้าพักได้ในที่เดียว'],
+                    ['ราคาชัดเจน', 'ดูราคาต่อคืนและราคาที่ปรับตามจำนวนผู้เข้าพักได้ทันที'],
+                    ['ดีลพิเศษ', 'พบข้อเสนอที่คุ้มค่าสำหรับการเดินทางครั้งถัดไป']
+                ],
+                button: 'เริ่มค้นหาโรงแรม',
+                action: 'hotels'
+            },
+            hotels: {
+                title: 'Hotels',
+                description: 'เลือกดูโรงแรมยอดนิยมและรายละเอียดห้องพักในประเทศไทย',
+                cards: [
+                    ['Ocean Blue Resort', 'Phuket, Thailand · ฿2,500 / night'],
+                    ['Teal Paradise Hotel', 'Krabi, Thailand · ฿1,900 / night'],
+                    ['Luxury Beach Resort', 'Koh Samui, Thailand · ฿3,200 / night']
+                ],
+                button: 'กลับไปหน้าค้นหา',
+                action: 'home'
+            },
+            deals: {
+                title: 'Deals',
+                description: 'ข้อเสนอพิเศษสำหรับสมาชิก DealRoom',
+                cards: [
+                    ['ลดสูงสุด 30%', 'รับส่วนลดโรงแรมที่ร่วมรายการสำหรับทริปถัดไป'],
+                    ['สมาชิก Gold', 'รับสิทธิ์ดูดีลพิเศษและราคาสมาชิกก่อนใคร'],
+                    ['จองวันนี้คุ้มกว่า', 'เลือกที่พักยอดนิยมพร้อมราคาเริ่มต้นที่ดีที่สุด']
+                ],
+                button: 'ดูโรงแรมทั้งหมด',
+                action: 'hotels'
+            },
+            about: {
+                title: 'About Us',
+                description: 'DealRoom ช่วยให้การค้นหาและจองที่พักเป็นเรื่องง่ายสำหรับทุกการเดินทาง',
+                cards: [
+                    ['Trusted booking', 'ข้อมูลที่พักและราคาถูกจัดวางให้ดูได้ง่าย'],
+                    ['Local destinations', 'ค้นพบสถานที่พักยอดนิยมในประเทศไทย'],
+                    ['Support', 'ทีมงานพร้อมช่วยเหลือเมื่อคุณต้องการ']
+                ],
+                button: 'กลับหน้าแรก',
+                action: 'home'
+            }
+        };
+
+        function showContentPage(pageName) {
+            const page = contentPages[pageName];
+            if (!page) {
+                return;
+            }
+
+            document.querySelector('main').style.display = 'none';
+            document.querySelector('footer').style.display = 'none';
+            dashboardPage.classList.remove('is-visible');
+            contentPage.innerHTML = `
+                <div class="content-page-header">
+                    <div class="dashboard-kicker">DealRoom</div>
+                    <h1>${page.title}</h1>
+                    <p>${page.description}</p>
+                </div>
+                <div class="content-page-grid">
+                    ${page.cards.map(([title, text]) => `<article class="content-page-card"><h2>${title}</h2><p>${text}</p><button class="btn btn-outline" type="button">View Details</button></article>`).join('')}
+                </div>
+                <div class="content-page-actions">
+                    <button class="btn btn-primary" data-content-action="${page.action}" type="button">${page.button}</button>
+                    <button class="btn btn-outline" data-content-action="home" type="button">Home</button>
+                </div>`;
+            contentPage.classList.add('is-visible');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function showDashboard(userName) {
+            document.querySelector('main').style.display = 'none';
+            document.querySelector('footer').style.display = 'none';
+            contentPage.classList.remove('is-visible');
+            dashboardPage.classList.add('is-visible');
+            dashboardUserName.textContent = userName;
+            headerUserName.textContent = `ผู้ใช้: ${userName}`;
+            headerUserName.style.display = 'inline-flex';
+            loginButton.style.display = 'none';
+            signupButton.style.display = 'none';
+            headerLogoutButton.style.display = 'inline-block';
+                headerBookingsButton.style.display = 'inline-block';
+            localStorage.setItem(loggedInKey, 'true');
+            closeLoginModal();
+        }
+
+        function showHotelPage() {
+            localStorage.removeItem(loggedInKey);
+            dashboardPage.classList.remove('is-visible');
+            contentPage.classList.remove('is-visible');
+            document.querySelector('main').style.display = '';
+            document.querySelector('footer').style.display = '';
+            headerUserName.textContent = '';
+            headerUserName.style.display = 'none';
+            loginButton.style.display = '';
+            signupButton.style.display = '';
+            headerLogoutButton.style.display = 'none';
+                headerBookingsButton.style.display = 'none';
+        }
+
+        function showHotelCatalog() {
+            dashboardPage.classList.remove('is-visible');
+            contentPage.classList.remove('is-visible');
+            document.querySelector('main').style.display = '';
+            document.querySelector('footer').style.display = '';
+            document.getElementById('hotels').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function showLoginForm() {
+            loginForm.classList.remove('is-hidden');
+            signupForm.classList.add('is-hidden');
+            document.getElementById('loginTitle').textContent = 'Log In';
+            authDescription.textContent = 'Enter your name and password to continue.';
+            loginName.focus();
+        }
+
+        function showSignupForm() {
+            loginForm.classList.add('is-hidden');
+            signupForm.classList.remove('is-hidden');
+            document.getElementById('loginTitle').textContent = 'Sign Up';
+            authDescription.textContent = 'Create an account and save your details for next time.';
+            signupName.focus();
+        }
+
+        function restoreLoggedInSession() {
+            const savedUser = JSON.parse(localStorage.getItem(savedUserKey) || 'null');
+            if (localStorage.getItem(loggedInKey) === 'true' && savedUser) {
+                showDashboard(savedUser.name);
+            }
+        }
+
+        function openLogin() {
+            loginModal.classList.add('is-open');
+            showLoginForm();
+            const savedUser = JSON.parse(localStorage.getItem(savedUserKey) || 'null');
+            if (savedUser) {
+                loginName.value = savedUser.name;
+                loginPassword.value = savedUser.password;
+            }
+        }
+
+        function closeLoginModal() {
+            loginModal.classList.remove('is-open');
+            loginForm.reset();
+            signupForm.reset();
+            loginError.textContent = '';
+            loginSuccess.textContent = '';
+            signupError.textContent = '';
+            signupSuccess.textContent = '';
+        }
+
+        loginButton.addEventListener('click', openLogin);
+        signupButton.addEventListener('click', () => {
+            loginModal.classList.add('is-open');
+            showSignupForm();
+        });
+        closeLogin.addEventListener('click', closeLoginModal);
+        document.getElementById('showSignup').addEventListener('click', showSignupForm);
+        document.getElementById('showLogin').addEventListener('click', showLoginForm);
+
+        loginModal.addEventListener('click', (event) => {
+            if (event.target === loginModal) {
+                closeLoginModal();
+            }
+        });
+
+        loginForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const savedUser = JSON.parse(localStorage.getItem(savedUserKey) || 'null');
+            const isValidLogin = savedUser
+                && loginName.value.trim() === savedUser.name
+                && loginPassword.value === savedUser.password;
+
+            loginError.textContent = isValidLogin ? '' : 'Error: ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง';
+            loginSuccess.textContent = isValidLogin ? 'เข้าสู่ระบบสำเร็จ' : '';
+            if (isValidLogin) {
+                showDashboard(savedUser.name);
+            }
+        });
+
+        signupForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            if (!signupForm.checkValidity()) {
+                signupError.textContent = 'Error: กรุณากรอกข้อมูลให้ครบถ้วน';
+                return;
+            }
+
+            const user = {
+                name: signupName.value.trim(),
+                email: signupEmail.value.trim(),
+                password: signupPassword.value
+            };
+            localStorage.setItem(savedUserKey, JSON.stringify(user));
+            signupError.textContent = '';
+            signupSuccess.textContent = 'บันทึกข้อมูลแล้ว สามารถเข้าสู่ระบบครั้งหน้าได้เลย';
+        });
+
+        const hotelCatalog = [
+            ['Chiang Mai Mountain Lodge', 'chiang mai thailand', 'เชียงใหม่', '2200', 'https://images.unsplash.com/photo-1584132967334-10e028bd69f7?auto=format&fit=crop&w=900&q=85', 'ห้องวิวภูเขา · คาเฟ่ · Wi-Fi ฟรี'],
+            ['Bangkok City Hotel', 'bangkok thailand', 'กรุงเทพฯ', '1800', 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=900&q=85', 'ใกล้รถไฟฟ้า · ฟิตเนส · ห้องประชุม'],
+            ['Pattaya Sea View', 'pattaya thailand', 'พัทยา', '2100', 'https://images.unsplash.com/photo-1564501049412-61c2a3083791?auto=format&fit=crop&w=900&q=85', 'วิวทะเล · สระว่ายน้ำ · ห้องอาหาร'],
+            ['Hua Hin Garden Resort', 'hua hin thailand', 'หัวหิน', '2400', 'https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=900&q=85', 'สวนส่วนตัว · สระว่ายน้ำ · อาหารเช้า'],
+            ['Kanchanaburi River Retreat', 'kanchanaburi thailand', 'กาญจนบุรี', '1700', 'https://images.unsplash.com/photo-1584132967334-10e028bd69f7?auto=format&fit=crop&w=900&q=85', 'ริมน้ำ · กิจกรรมธรรมชาติ · ที่จอดรถ'],
+            ['Khao Yai Green Escape', 'khao yai thailand', 'เขาใหญ่', '2600', 'https://images.unsplash.com/photo-1540541338287-41700207dee6?auto=format&fit=crop&w=900&q=85', 'วิวธรรมชาติ · จักรยาน · คาเฟ่'],
+            ['Koh Chang Island Villa', 'koh chang thailand', 'เกาะช้าง', '2800', 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=900&q=85', 'ติดชายหาด · เรือคายัค · สปา'],
+            ['Phuket Old Town Stay', 'phuket thailand', 'ภูเก็ต', '2300', 'https://images.unsplash.com/photo-1601918774946-25832a4be0d6?auto=format&fit=crop&w=900&q=85', 'ใกล้เมืองเก่า · สระว่ายน้ำ · รถรับส่ง'],
+            ['Nakhon Ratchasima Grand', 'nakhon ratchasima thailand', 'นครราชสีมา', '1500', 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=900&q=85', 'ห้องครอบครัว · อาหารเช้า · Wi-Fi ฟรี']
+        ];
+
+        const hotelGrid = document.querySelector('.hotel-grid');
+        hotelCatalog.forEach(([name, destination, location, price, image, amenities]) => {
+            hotelGrid.insertAdjacentHTML('beforeend', `
+                <article class="hotel-card" data-destination="${destination}" data-price="${price}" data-capacity="2" data-image="${image}" data-amenities="${amenities}">
+                    <div class="hotel-image"><img src="${image}" alt="ภายในและบรรยากาศของ ${name}" loading="lazy"></div>
+                    <div class="hotel-info"><h3>${name}</h3><div class="location">📍 ${location}, Thailand</div><div class="hotel-bottom"><div class="rating">★ 4.6</div><div class="price">฿${Number(price).toLocaleString('th-TH')}<small>/night</small></div></div><br><button class="btn btn-secondary details-button" type="button">View Details</button></div>
+                </article>`);
+        });
+
+        const destinationInput = document.getElementById('destinationInput');
+        const checkInInput = document.getElementById('checkInInput');
+        const checkOutInput = document.getElementById('checkOutInput');
+        const guestInput = document.getElementById('guestInput');
+        const searchButton = document.getElementById('searchButton');
+        const searchResult = document.getElementById('searchResult');
+        const hotelCards = Array.from(document.querySelectorAll('.hotel-card'));
+
+        function updateVisibleCardPrices() {
+            const guestCount = Number(guestInput.value.match(/\d+/)[0]);
+
+            hotelCards.forEach((card) => {
+                const basePrice = Number(card.dataset.price);
+                const includedGuests = Number(card.dataset.capacity);
+                const extraGuests = Math.max(0, guestCount - includedGuests);
+                const totalPrice = basePrice + (Math.round(basePrice * 0.2) * extraGuests);
+                card.querySelector('.price').firstChild.textContent = `฿${totalPrice.toLocaleString('th-TH')}`;
+            });
+        }
+
+        searchButton.addEventListener('click', () => {
+            const destination = destinationInput.value.trim().toLowerCase();
+            const checkIn = checkInInput.value;
+            const checkOut = checkOutInput.value;
+
+            searchResult.className = 'search-result';
+            if (checkIn && checkOut && checkOut <= checkIn) {
+                searchResult.classList.add('error-message');
+                searchResult.textContent = 'Error: Check-out ต้องอยู่หลังวัน Check-in';
+                return;
+            }
+
+            const matchingCards = hotelCards.filter((card) => {
+                const hotelDestination = card.dataset.destination;
+                return !destination || hotelDestination.includes(destination);
+            });
+
+            hotelCards.forEach((card) => {
+                card.style.display = matchingCards.includes(card) ? '' : 'none';
+            });
+            updateVisibleCardPrices();
+
+            if (matchingCards.length === 0) {
+                searchResult.classList.add('error-message');
+                searchResult.textContent = 'ไม่พบโรงแรมในสถานที่นี้ ลองค้นหาชื่อจังหวัด เช่น Bangkok, Chiang Mai, Phuket หรือ Krabi';
+                return;
+            }
+
+            const resultText = matchingCards.length === 1 ? '1 hotel found' : `${matchingCards.length} hotels found`;
+            searchResult.textContent = `${resultText} พร้อมราคา / night`;
+            document.getElementById('hotels').scrollIntoView({ behavior: 'smooth' });
+        });
+
+        guestInput.addEventListener('change', updateVisibleCardPrices);
+
+        logoutButton.addEventListener('click', showHotelPage);
+        headerLogoutButton.addEventListener('click', showHotelPage);
+        headerUserName.addEventListener('click', () => {
+            const savedUser = JSON.parse(localStorage.getItem(savedUserKey) || 'null');
+            if (savedUser && localStorage.getItem(loggedInKey) === 'true') {
+                showDashboard(savedUser.name);
+            }
+        });
+            headerBookingsButton.addEventListener('click', () => {
+                const savedUser = JSON.parse(localStorage.getItem(savedUserKey) || 'null');
+                if (savedUser && localStorage.getItem(loggedInKey) === 'true') {
+                    showDashboard(savedUser.name);
+                    renderDashboardPage(1);
+                    document.getElementById('bookingQueue').scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+
+        const detailsModal = document.getElementById('detailsModal');
+        const closeDetails = document.getElementById('closeDetails');
+        const detailsGuests = document.getElementById('detailsGuests');
+        const detailsTitle = document.getElementById('detailsTitle');
+        const detailsImage = document.getElementById('detailsImage');
+        const detailsLocation = document.getElementById('detailsLocation');
+        const detailsCapacity = document.getElementById('detailsCapacity');
+        const detailsAmenities = document.getElementById('detailsAmenities');
+        const detailsTotalPrice = document.getElementById('detailsTotalPrice');
+        const detailsPriceNote = document.getElementById('detailsPriceNote');
+        const bookDetailsButton = document.getElementById('bookDetailsButton');
+        const detailsButtons = document.querySelectorAll('.details-button');
+        let selectedHotel = null;
+
+        function renderBookingQueue() {
+            const bookingQueue = document.getElementById('bookingQueue');
+            if (!bookingQueue) {
+                return;
+            }
+
+            const bookings = JSON.parse(localStorage.getItem(getBookingsKey()) || '[]');
+            const totalNights = bookings.reduce((total, booking) => total + (booking.nights || 1), 0);
+            const totalSpend = bookings.reduce((total, booking) => total + Number(booking.price.replace(/[^\d]/g, '')), 0);
+            const upcomingBooking = bookings[0];
+            document.getElementById('upcomingTripsCount').textContent = bookings.length;
+            document.getElementById('totalNightsCount').textContent = totalNights;
+            document.getElementById('savedDealsCount').textContent = '0';
+            document.getElementById('totalSpendAmount').textContent = `฿${totalSpend.toLocaleString('th-TH')}`;
+            document.getElementById('upcomingBookingName').textContent = upcomingBooking ? upcomingBooking.hotel : 'ยังไม่มีรายการจอง';
+            document.getElementById('upcomingBookingInfo').textContent = upcomingBooking
+                ? `${upcomingBooking.location} · ${upcomingBooking.checkIn || 'ไม่ระบุวัน'} - ${upcomingBooking.checkOut || 'ไม่ระบุวัน'}`
+                : 'เลือกโรงแรมเพื่อเพิ่มรายการจอง';
+            document.getElementById('upcomingBookingPrice').textContent = upcomingBooking ? upcomingBooking.price : '-';
+            document.getElementById('upcomingBookingGuests').textContent = upcomingBooking
+                ? `${upcomingBooking.guests} guests · ${upcomingBooking.nights || 1} night${(upcomingBooking.nights || 1) > 1 ? 's' : ''}`
+                : '-';
+            document.getElementById('cancelBookingButton').disabled = !upcomingBooking;
+            bookingQueue.innerHTML = bookings.length
+                ? bookings.map((booking, index) => `<div class="queue-item"><div><strong>${booking.hotel}</strong><small>${booking.location} · ${booking.guests} guests · ${booking.price} / night</small></div><button class="btn btn-danger queue-cancel" data-booking-index="${index}" type="button">Cancel</button></div>`).join('')
+                : '<p>ยังไม่มีรายการจอง เลือกโรงแรมเพื่อเพิ่มคิวจอง</p>';
+        }
+
+        function updateDetailsPrice() {
+            if (!selectedHotel) {
+                return;
+            }
+
+            const guestCount = Number(detailsGuests.value);
+            const basePrice = Number(selectedHotel.dataset.price);
+            const includedGuests = Number(selectedHotel.dataset.capacity);
+            const extraGuests = Math.max(0, guestCount - includedGuests);
+            const extraPrice = Math.round(basePrice * 0.2) * extraGuests;
+            const totalPrice = basePrice + extraPrice;
+
+            detailsTotalPrice.textContent = `฿${totalPrice.toLocaleString('th-TH')}`;
+            detailsPriceNote.textContent = extraGuests
+                ? `รวม ${includedGuests} คนแรกแล้ว เพิ่ม ฿${Math.round(basePrice * 0.2).toLocaleString('th-TH')} ต่อคนที่เพิ่ม`
+                : `ราคานี้รวมผู้เข้าพัก ${includedGuests} คน / คืน`;
+        }
+
+        detailsButtons.forEach((button) => {
+            button.addEventListener('click', () => {
+                selectedHotel = button.closest('.hotel-card');
+                detailsTitle.textContent = selectedHotel.querySelector('h3').textContent;
+                detailsImage.src = selectedHotel.dataset.image;
+                detailsImage.alt = `รายละเอียดภายใน ${detailsTitle.textContent}`;
+                detailsLocation.textContent = selectedHotel.querySelector('.location').textContent.trim();
+                detailsCapacity.textContent = `รองรับ ${selectedHotel.dataset.capacity} คน ในราคาพื้นฐาน ฿${Number(selectedHotel.dataset.price).toLocaleString('th-TH')} / คืน`;
+                detailsAmenities.textContent = `สิ่งอำนวยความสะดวก: ${selectedHotel.dataset.amenities}`;
+                detailsGuests.value = guestInput.value.startsWith('5') ? '5' : guestInput.value.match(/\d+/)[0];
+                updateDetailsPrice();
+                bookDetailsButton.textContent = 'จองที่พักนี้';
+                bookDetailsButton.classList.add('btn-primary');
+                bookDetailsButton.classList.remove('btn-disabled');
+                bookDetailsButton.disabled = false;
+                detailsModal.classList.add('is-open');
+                detailsGuests.focus();
+            });
+        });
+
+        detailsGuests.addEventListener('change', updateDetailsPrice);
+        closeDetails.addEventListener('click', () => detailsModal.classList.remove('is-open'));
+        detailsModal.addEventListener('click', (event) => {
+            if (event.target === detailsModal) {
+                detailsModal.classList.remove('is-open');
+            }
+        });
+
+        renderBookingQueue();
+
+        document.getElementById('bookNowButton').addEventListener('click', () => {
+            document.querySelector('.hero-card').scrollIntoView({ behavior: 'smooth' });
+            destinationInput.focus();
+        });
+
+        document.getElementById('heroDetailsButton').addEventListener('click', () => {
+            document.getElementById('hotels').scrollIntoView({ behavior: 'smooth' });
+        });
+
+        document.getElementById('viewAllButton').addEventListener('click', () => {
+            destinationInput.value = '';
+            hotelCards.forEach((card) => card.style.display = '');
+            searchResult.className = 'search-result';
+            searchResult.textContent = 'แสดงโรงแรมทั้งหมดแล้ว';
+        });
+
+        document.getElementById('exploreDealsButton').addEventListener('click', () => {
+            document.getElementById('hotels').scrollIntoView({ behavior: 'smooth' });
+            searchResult.textContent = 'เลือกโรงแรมที่สนใจเพื่อดูดีลและราคา';
+        });
+
+        document.getElementById('bookDetailsButton').addEventListener('click', (event) => {
+            const startDate = checkInInput.value ? new Date(checkInInput.value) : null;
+            const endDate = checkOutInput.value ? new Date(checkOutInput.value) : null;
+            const nights = startDate && endDate ? Math.max(1, Math.ceil((endDate - startDate) / 86400000)) : 1;
+            const bookings = JSON.parse(localStorage.getItem(getBookingsKey()) || '[]');
+            bookings.push({
+                hotel: selectedHotel.querySelector('h3').textContent,
+                location: selectedHotel.querySelector('.location').textContent.trim(),
+                guests: Number(detailsGuests.value),
+                price: detailsTotalPrice.textContent,
+                checkIn: checkInInput.value,
+                checkOut: checkOutInput.value,
+                nights
+            });
+            localStorage.setItem(getBookingsKey(), JSON.stringify(bookings));
+            renderBookingQueue();
+            event.currentTarget.textContent = 'เพิ่มเข้ารายการแล้ว';
+            event.currentTarget.classList.remove('btn-primary');
+            event.currentTarget.classList.add('btn-disabled');
+            event.currentTarget.disabled = true;
+        });
+
+        document.getElementById('newBookingButton').addEventListener('click', showHotelCatalog);
+        document.getElementById('viewAllBookingsButton').addEventListener('click', () => renderDashboardPage(2));
+        document.getElementById('cancelBookingButton').addEventListener('click', (event) => {
+            const bookings = JSON.parse(localStorage.getItem(getBookingsKey()) || '[]');
+            bookings.shift();
+            localStorage.setItem(getBookingsKey(), JSON.stringify(bookings));
+            renderBookingQueue();
+        });
+
+        function cancelQueuedBooking(event) {
+            const cancelButton = event.target.closest('.queue-cancel');
+            if (!cancelButton) {
+                return;
+            }
+
+            const bookings = JSON.parse(localStorage.getItem(getBookingsKey()) || '[]');
+            bookings.splice(Number(cancelButton.dataset.bookingIndex), 1);
+            localStorage.setItem(getBookingsKey(), JSON.stringify(bookings));
+            renderBookingQueue();
+        }
+
+        document.querySelectorAll('.dashboard-tab').forEach((button) => {
+            button.addEventListener('click', () => {
+                document.querySelectorAll('.dashboard-tab').forEach((tab) => tab.classList.remove('is-active'));
+                button.classList.add('is-active');
+                renderDashboardPage(button.dataset.view === 'bookings' ? 2 : 1);
+            });
+        });
+
+        document.querySelectorAll('.period-tab').forEach((button) => {
+            button.addEventListener('click', () => {
+                document.querySelectorAll('.period-tab').forEach((tab) => {
+                    tab.classList.remove('is-active', 'btn-primary');
+                    tab.classList.add('btn-outline');
+                });
+                button.classList.add('is-active', 'btn-primary');
+                button.classList.remove('btn-outline');
+            });
+        });
+
+        const dashboardContent = document.getElementById('dashboardContent');
+        const initialDashboardContent = dashboardContent.innerHTML;
+        const pageButtons = document.querySelectorAll('.page-button');
+        let currentDashboardPage = 1;
+        dashboardContent.addEventListener('click', cancelQueuedBooking);
+
+        function bindDashboardPageOneActions() {
+            const viewAllBookingsButton = document.getElementById('viewAllBookingsButton');
+            const cancelBookingButton = document.getElementById('cancelBookingButton');
+            if (viewAllBookingsButton) {
+                viewAllBookingsButton.addEventListener('click', () => renderDashboardPage(2));
+            }
+            if (cancelBookingButton) {
+                cancelBookingButton.addEventListener('click', (event) => {
+                    event.currentTarget.textContent = 'Cancelled';
+                    event.currentTarget.disabled = true;
+                    event.currentTarget.classList.remove('btn-danger');
+                    event.currentTarget.classList.add('btn-disabled');
+                });
+            }
+        }
+
+        function renderDashboardPage(pageNumber) {
+            currentDashboardPage = Math.max(1, Math.min(3, pageNumber));
+            if (currentDashboardPage === 1) {
+                dashboardContent.innerHTML = initialDashboardContent;
+                bindDashboardPageOneActions();
+                renderBookingQueue();
+            } else if (currentDashboardPage === 2) {
+                const bookings = JSON.parse(localStorage.getItem(getBookingsKey()) || '[]');
+                const bookingMarkup = bookings.length
+                    ? bookings.map((booking) => `<div class="booking-row"><div><strong>${booking.hotel}</strong><p>${booking.location} · ${booking.checkIn || 'ไม่ระบุวัน'} - ${booking.checkOut || 'ไม่ระบุวัน'}</p></div><div class="booking-price">${booking.price}</div></div>`).join('')
+                    : '<p>ยังไม่มีรายการจองของคุณ</p>';
+                dashboardContent.innerHTML = `
+                    <article class="dashboard-card dashboard-card-wide">
+                        <div class="dashboard-card-header"><div><h2>My Bookings</h2><p>ประวัติการจองทั้งหมดของคุณ</p></div><span>▣</span></div>
+                        ${bookingMarkup}
+                    </article>
+                    <article class="dashboard-card"><h2>Booking Status</h2><div class="stat-number">${bookings.length}</div><p>รายการยืนยันแล้ว</p></article>`;
+            } else {
+                dashboardContent.innerHTML = `
+                    <article class="dashboard-card dashboard-card-wide"><div class="dashboard-card-header"><div><h2>Account & Support</h2><p>ข้อมูลบัญชีและความช่วยเหลือ</p></div><span>?</span></div><div class="booking-row"><div><strong>Account email</strong><p>${JSON.parse(localStorage.getItem(savedUserKey) || '{}').email || 'ยังไม่ได้ระบุ'}</p></div><div class="booking-price">✓</div></div><div class="booking-row"><div><strong>Help Center</strong><p>ติดต่อทีมงาน DealRoom ได้ตลอดเวลา</p></div><div class="booking-price">→</div></div></article>
+                    <article class="dashboard-card"><h2>Member Level</h2><div class="stat-number">Gold</div><p>สิทธิพิเศษสำหรับสมาชิก</p></article>`;
+            }
+            pageButtons.forEach((button) => {
+                const page = Number(button.dataset.page);
+                button.classList.toggle('btn-primary', page === currentDashboardPage && button.textContent.trim() === String(page));
+                button.classList.toggle('btn-outline', !(page === currentDashboardPage && button.textContent.trim() === String(page)));
+                if (button.getAttribute('aria-label') === 'Previous page') {
+                    button.disabled = currentDashboardPage === 1;
+                }
+                if (button.getAttribute('aria-label') === 'Next page') {
+                    button.disabled = currentDashboardPage === 3;
+                }
+            });
+            dashboardPage.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        pageButtons.forEach((button) => {
+            button.addEventListener('click', () => {
+                const requestedPage = button.getAttribute('aria-label') === 'Previous page'
+                    ? currentDashboardPage - 1
+                    : button.getAttribute('aria-label') === 'Next page'
+                        ? currentDashboardPage + 1
+                        : Number(button.dataset.page);
+                renderDashboardPage(requestedPage);
+            });
+        });
+
+        document.querySelectorAll('.page-nav').forEach((link) => {
+            link.addEventListener('click', (event) => {
+                event.preventDefault();
+                if (link.dataset.page === 'hotels') {
+                    showHotelCatalog();
+                } else {
+                    showContentPage(link.dataset.page);
+                }
+            });
+        });
+
+        contentPage.addEventListener('click', (event) => {
+            const actionButton = event.target.closest('[data-content-action]');
+            if (actionButton) {
+                showContentPage(actionButton.dataset.contentAction);
+                return;
+            }
+
+            if (event.target.closest('.content-page-card .btn')) {
+                showContentPage('hotels');
+            }
+        });
+
+        restoreLoggedInSession();
+    </script>
+
+</body>
+</html>
